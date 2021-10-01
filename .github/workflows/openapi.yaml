@@ -35,6 +35,7 @@ jobs:
     #    language: [c++, cs]
     #    type: [client, server]
     steps:
+    - uses: actions/checkout@v2
     - uses: mpetrunic/swagger-cli-action@v1.0.0
       with:
         command: "validate interface.yaml"
