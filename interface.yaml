@@ -1,0 +1,36 @@
+swagger: '2.0'
+
+info:
+  version: "0.0.1"
+  title: unisim_ros2_control_api
+
+paths:
+  /spawn:
+    post:
+      summary: spawn robot from URDF
+      consumes:
+       - multipart/form-data
+      parameters:
+       - in: formData
+         name: urdf_path
+         type: string
+         description: URDF file of the robot
+         
+      responses:
+        200:
+          description: Successful responses
+          schema:
+            title: ArrayOfPosts
+            type: array
+            items:
+              title: Posts
+              type: object
+              properties:
+                name:
+                  type: string
+                title:
+                  type: string
+                published:
+                  type: boolean
+                content:
+                  type: string
