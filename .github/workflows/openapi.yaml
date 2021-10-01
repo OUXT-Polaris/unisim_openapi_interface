@@ -36,6 +36,6 @@ jobs:
     #    type: [client, server]
     steps:
     - uses: actions/checkout@v2
-    - uses: mpetrunic/swagger-cli-action@v1.0.0
+    - uses: bjerkio/swagger-codegen-action@v1
       with:
-        command: "validate interface.yaml"
+        args: generate -i interface.yaml -l cpprest -o client
