@@ -38,4 +38,4 @@ jobs:
     - uses: actions/checkout@v2
     - uses: bjerkio/swagger-codegen-action@v1
       with:
-        args: generate -i interface.yaml -l cpprest -o client
+        args: -i interface.yaml -l cpprest -o client
