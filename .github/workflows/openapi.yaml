@@ -36,6 +36,13 @@ jobs:
     #    type: [client, server]
     steps:
     - uses: actions/checkout@v2
-    - uses: bjerkio/swagger-codegen-action@v1
       with:
-        args: -i interface.yaml -l cpprest -o client
+        path: unisim_openapi_interface
+    - uses: actions/checkout@v2
+      with:
+        repository: swagger-api/swagger-codegen
+        path: swagger-codegen
+    - name: build swagger-codegen
+      run: |
+        cd swagger-codegen
+        ./run-in-docker.sh mvn package
