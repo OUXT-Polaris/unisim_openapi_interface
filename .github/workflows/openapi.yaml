@@ -44,6 +44,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Checkout tools repo
+        uses: actions/checkout@v2
+        with:
+          ref: cpp_client
       - uses: actions/download-artifact@v2
         with:
           name: cpp_client
+      - name: git setting
+        run: |
+          git config --local user.email "ouxt.share@gmail.com"
+          git config --local user.name "wam-v-tan"
+      - name: Commit files
+        run: |
+          git add .
+          git commit -m "update client" -a
+          git pull
+          git push origin cpp_client
