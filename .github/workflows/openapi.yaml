@@ -36,3 +36,14 @@ jobs:
       run: |
         mkdir cpp_client
         docker run --rm -u "$(id -u $USER):$(id -g $USER)" -v ${PWD}:/local -v ${PWD}/cpp_client:/cpp_client swaggerapi/swagger-codegen-cli generate -i /local/interface.yaml -l cpprest -o /cpp_client
+    - uses: actions/upload-artifact@v2
+      with:
+        name: cpp_client
+        path: cpp_client
+  commit_changes:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: cpp_client
