@@ -38,11 +38,5 @@ jobs:
     - uses: actions/checkout@v2
       with:
         path: unisim_openapi_interface
-    - uses: actions/checkout@v2
-      with:
-        repository: swagger-api/swagger-codegen
-        path: swagger-codegen
-    - name: build swagger-codegen
-      run: |
-        cd swagger-codegen
-        ./run-in-docker.sh mvn package
+    - name: generate C++
+      run:  docker run --rm -v ${PWD}:/local -v ${PWD}/out:/out swaggerapi/swagger-codegen-cli-v3 generate -i /local/interface.yaml -l nodejs-server -o /out
