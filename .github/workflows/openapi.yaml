@@ -30,13 +30,11 @@ jobs:
           publish_dir: swagger-ui
   build:
     runs-on: ubuntu-20.04
-    # strategy:
-    #  matrix:
-    #    language: [c++, cs]
-    #    type: [client, server]
     steps:
     - uses: actions/checkout@v2
       with:
         path: unisim_openapi_interface
-    - name: generate C++
-      run:  docker run --rm -v ${PWD}:/local -v ${PWD}/out:/out swaggerapi/swagger-codegen-cli-v3 generate -i /local/interface.yaml -l nodejs-server -o /out
+    - name: generate C++ client
+      run: |
+        mkdir cpp_client
+        docker run --rm -v ${PWD}:/local -v ${PWD}/cpp_client:/cpp_client swaggerapi/swagger-codegen-cli generate -i /local/interface.yaml -l cpprest -o /cpp_client
