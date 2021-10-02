@@ -32,9 +32,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
-      with:
-        path: unisim_openapi_interface
     - name: generate C++ client
       run: |
         mkdir cpp_client
-        docker run --rm -v ${PWD}:/local -v ${PWD}/cpp_client:/cpp_client swaggerapi/swagger-codegen-cli generate -i /local/interface.yaml -l cpprest -o /cpp_client
+        docker run --rm -u "$(id -u $USER):$(id -g $USER)" -v ${PWD}:/local -v ${PWD}/cpp_client:/cpp_client swaggerapi/swagger-codegen-cli generate -i /local/interface.yaml -l cpprest -o /cpp_client
