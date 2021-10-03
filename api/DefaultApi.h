@@ -60,6 +60,14 @@ public:
     pplx::task<std::shared_ptr<Object>> startPost(
         boost::optional<std::shared_ptr<Body_1>> body
     );
+    /// <summary>
+    /// stop simulation
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// </remarks>
+    pplx::task<std::shared_ptr<Object>> stopPost(
+    );
 
 protected:
     std::shared_ptr<ApiClient> m_ApiClient;
