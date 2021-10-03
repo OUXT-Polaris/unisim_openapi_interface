@@ -6,7 +6,7 @@ info:
 
 definitions:
   Point:
-    type: "object"
+    type: object
     properties:
       x:
         type: number
@@ -21,7 +21,7 @@ definitions:
         format: double
         example: 0.0
   Quaternion:
-    type: "object"
+    type: object
     properties:
       x:
         type: number
@@ -40,7 +40,7 @@ definitions:
         format: double
         example: 1.0
   Pose:
-    type: "object"
+    type: object
     properties:
       position:
         type: object
@@ -62,15 +62,42 @@ paths:
         in: "body"
         required: true
         schema:
-          type: "object"
+          type: object
           properties:
             urdf_path:
-              type: "string"
+              type: string
               example: "/tmp/robot.urdf"
-         
+            pose:
+              type: object
+              $ref: "#/definitions/Pose"
       responses:
         200:
-          description: Successful responses
+          description: responses from UniSim
+          schema:
+            title: result
+            properties:
+              success:
+                type: boolean
+  /start:
+    post:
+      summary: start simulation
+      consumes:
+       - multipart/form-data
+      produces: 
+      - "application/json"
+      parameters:
+      - name: "body"
+        in: "body"
+        schema:
+          type: object
+          properties:
+            realtime_factor:
+              type: number
+              default: 1.0
+              format: double
+      responses:
+        200:
+          description: responses from UniSim
           schema:
             title: result
             properties:
