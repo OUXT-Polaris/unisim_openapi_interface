@@ -23,6 +23,7 @@ Body::Body()
 {
     m_Urdf_path = utility::conversions::to_string_t("");
     m_Urdf_pathIsSet = false;
+    m_PoseIsSet = false;
 }
 
 Body::~Body()
@@ -42,6 +43,10 @@ web::json::value Body::toJson() const
     {
         val[utility::conversions::to_string_t("urdf_path")] = ModelBase::toJson(m_Urdf_path);
     }
+    if(m_PoseIsSet)
+    {
+        val[utility::conversions::to_string_t("pose")] = ModelBase::toJson(m_Pose);
+    }
 
     return val;
 }
@@ -54,6 +59,16 @@ void Body::fromJson(web::json::value& val)
         if(!fieldValue.is_null())
         {
             setUrdfPath(ModelBase::stringFromJson(fieldValue));
+        }
+    }
+    if(val.has_field(utility::conversions::to_string_t("pose")))
+    {
+        web::json::value& fieldValue = val[utility::conversions::to_string_t("pose")];
+        if(!fieldValue.is_null())
+        {
+            std::shared_ptr<Pose> newItem(new Pose());
+            newItem->fromJson(fieldValue);
+            setPose( newItem );
         }
     }
 }
@@ -71,6 +86,14 @@ void Body::toMultipart(std::shared_ptr<MultipartFormData> multipart, const utili
         multipart->add(ModelBase::toHttpContent(namePrefix + utility::conversions::to_string_t("urdf_path"), m_Urdf_path));
         
     }
+    if(m_PoseIsSet)
+    {
+        if (m_Pose.get())
+        {
+            m_Pose->toMultipart(multipart, utility::conversions::to_string_t("pose."));
+        }
+        
+    }
 }
 
 void Body::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& prefix)
@@ -84,6 +107,15 @@ void Body::fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const uti
     if(multipart->hasContent(utility::conversions::to_string_t("urdf_path")))
     {
         setUrdfPath(ModelBase::stringFromHttpContent(multipart->getContent(utility::conversions::to_string_t("urdf_path"))));
+    }
+    if(multipart->hasContent(utility::conversions::to_string_t("pose")))
+    {
+        if(multipart->hasContent(utility::conversions::to_string_t("pose")))
+        {
+            std::shared_ptr<Pose> newItem(new Pose());
+            newItem->fromMultiPart(multipart, utility::conversions::to_string_t("pose."));
+            setPose( newItem );
+        }
     }
 }
 
@@ -106,6 +138,27 @@ bool Body::urdfPathIsSet() const
 void Body::unsetUrdf_path()
 {
     m_Urdf_pathIsSet = false;
+}
+
+std::shared_ptr<Pose> Body::getPose() const
+{
+    return m_Pose;
+}
+
+
+void Body::setPose(std::shared_ptr<Pose> value)
+{
+    m_Pose = value;
+    m_PoseIsSet = true;
+}
+bool Body::poseIsSet() const
+{
+    return m_PoseIsSet;
+}
+
+void Body::unsetPose()
+{
+    m_PoseIsSet = false;
 }
 
 }

@@ -23,6 +23,7 @@
 #include "../ApiClient.h"
 
 #include "Body.h"
+#include "Body_1.h"
 #include "Object.h"
 
 #include <boost/optional.hpp>
@@ -48,6 +49,16 @@ public:
     /// <param name="body"></param>
     pplx::task<std::shared_ptr<Object>> spawnPost(
         std::shared_ptr<Body> body
+    );
+    /// <summary>
+    /// start simulation
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// </remarks>
+    /// <param name="body"> (optional)</param>
+    pplx::task<std::shared_ptr<Object>> startPost(
+        boost::optional<std::shared_ptr<Body_1>> body
     );
 
 protected:

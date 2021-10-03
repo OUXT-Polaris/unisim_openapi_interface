@@ -11,19 +11,17 @@
  */
 
 /*
- * Body.h
+ * Body_1.h
  *
  * 
  */
 
-#ifndef IO_SWAGGER_CLIENT_MODEL_Body_H_
-#define IO_SWAGGER_CLIENT_MODEL_Body_H_
+#ifndef IO_SWAGGER_CLIENT_MODEL_Body_1_H_
+#define IO_SWAGGER_CLIENT_MODEL_Body_1_H_
 
 
 #include "../ModelBase.h"
 
-#include "Pose.h"
-#include <cpprest/details/basic_types.h>
 
 namespace io {
 namespace swagger {
@@ -33,12 +31,12 @@ namespace model {
 /// <summary>
 /// 
 /// </summary>
-class  Body
+class  Body_1
     : public ModelBase
 {
 public:
-    Body();
-    virtual ~Body();
+    Body_1();
+    virtual ~Body_1();
 
     /////////////////////////////////////////////
     /// ModelBase overrides
@@ -52,28 +50,19 @@ public:
     void fromMultiPart(std::shared_ptr<MultipartFormData> multipart, const utility::string_t& namePrefix) override;
 
     /////////////////////////////////////////////
-    /// Body members
+    /// Body_1 members
 
     /// <summary>
     /// 
     /// </summary>
-    utility::string_t getUrdfPath() const;
-    bool urdfPathIsSet() const;
-    void unsetUrdf_path();
-    void setUrdfPath(utility::string_t value);
-    /// <summary>
-    /// 
-    /// </summary>
-    std::shared_ptr<Pose> getPose() const;
-    bool poseIsSet() const;
-    void unsetPose();
-    void setPose(std::shared_ptr<Pose> value);
+    double getRealtimeFactor() const;
+    bool realtimeFactorIsSet() const;
+    void unsetRealtime_factor();
+    void setRealtimeFactor(double value);
 
 protected:
-    utility::string_t m_Urdf_path;
-    bool m_Urdf_pathIsSet;
-    std::shared_ptr<Pose> m_Pose;
-    bool m_PoseIsSet;
+    double m_Realtime_factor;
+    bool m_Realtime_factorIsSet;
 };
 
 }
@@ -81,4 +70,4 @@ protected:
 }
 }
 
-#endif /* IO_SWAGGER_CLIENT_MODEL_Body_H_ */
+#endif /* IO_SWAGGER_CLIENT_MODEL_Body_1_H_ */
