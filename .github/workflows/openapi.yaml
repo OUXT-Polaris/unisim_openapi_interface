@@ -3,8 +3,6 @@ name: OpenAPI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -45,27 +43,24 @@ jobs:
     needs: build
     steps:
       - name: Checkout tools repo
-        if: ${{ github.event_name != 'pull_request'}
         uses: actions/checkout@v2
         with:
           ref: cpp_client
       - uses: actions/download-artifact@v2
-        if: ${{ github.event_name != 'pull_request'}
         with:
           name: cpp_client
       - name: Count changes
-        if: ${{ github.event_name != 'pull_request'}
         id: changes
         run: |
           git add -N .
           echo "::set-output name=count::$(git diff --name-only | wc -l)"
       - name: git setting
-        if: steps.changes.outputs.count > 0 && ${{ github.event_name != 'pull_request'}
+        if: steps.changes.outputs.count > 0
         run: |
           git config --local user.email "ouxt.share@gmail.com"
           git config --local user.name "wam-v-tan"
       - name: Commit files
-        if: steps.changes.outputs.count > 0 && ${{ github.event_name != 'pull_request'}
+        if: steps.changes.outputs.count > 0
         run: |
           git add .
           git commit -m "update client" -a
