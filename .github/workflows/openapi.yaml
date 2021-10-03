@@ -47,24 +47,53 @@ jobs:
       - name: Checkout tools repo
         uses: actions/checkout@v2
         with:
-          ref: cpp_client
+          ref: master
+          repository: OUXT-Polaris/${{ matrix.package_name }}
+          token: ${{ secrets.WAMV_TAN_BOT_SECRET }}
+          path: src/api_client
       - uses: actions/download-artifact@v2
         with:
           name: cpp_client
+      - name: Check branch exist
+        id: check_branch
+        run: |
+          echo "::set-output name=exist::$(git ls-remote --heads https://github.com/${{ matrix.package_name }}.git workflow/sync | wc -l)"
       - name: Count changes
         id: changes
         run: |
           git add -N .
           echo "::set-output name=count::$(git diff --name-only | wc -l)"
-      - name: git setting
-        if: steps.changes.outputs.count > 0
-        run: |
-          git config --local user.email "ouxt.share@gmail.com"
-          git config --local user.name "wam-v-tan"
-      - name: Commit files
-        if: steps.changes.outputs.count > 0
-        run: |
-          git add .
-          git commit -m "update client" -a
-          git pull
-          git push origin cpp_client
+      - uses: peter-evans/create-pull-request@v3
+        id: create_pull_request
+        if: steps.check_branch.outputs.exist == 0 && steps.changes.outputs.count > 0
+        with:
+          token: ${{ secrets.WAMV_TAN_BOT_SECRET }}
+          commit-message: Setup workflow
+          committer: wam-v-tan <ouxt.share@gmail.com>
+          author: wam-v-tan <ouxt.share@gmail.com>
+          signoff: false
+          branch: workflow/sync
+          base: ${{ steps.check_default_branch.outputs.default_branch }}
+          delete-branch: true
+          title: '[Bot] Update workflow'
+          body: |
+            # Description
+            Update client by [this action](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}).
+            # How to check
+            Please check passing all CI test.
+          labels: |
+            bot
+          assignees: wam-v-tan
+          reviewers: wam-v-tan
+          team-reviewers: |
+            owners
+            maintainers
+          draft: false
+      - name: Enable Pull Request Automerge
+        if: steps.create_pull_request.outputs.pull-request-operation == 'created'
+        uses: peter-evans/enable-pull-request-automerge@v1
+        with:
+          token: ${{ secrets.WAMV_TAN_BOT_SECRET }}
+          pull-request-number: ${{ steps.create_pull_request.outputs.pull-request-number }}
+          merge-method: squash
+          repository: OUXT-Polaris/${{ matrix.package_name }}
