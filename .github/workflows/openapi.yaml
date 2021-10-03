@@ -50,10 +50,10 @@ jobs:
           ref: master
           repository: OUXT-Polaris/unisim_ros2_control
           token: ${{ secrets.WAMV_TAN_BOT_SECRET }}
-          path: src/api_client
       - uses: actions/download-artifact@v2
         with:
           name: cpp_client
+          path: src/api_client
       - name: Check branch exist
         id: check_branch
         run: |
