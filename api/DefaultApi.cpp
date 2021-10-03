@@ -36,7 +36,7 @@ DefaultApi::~DefaultApi()
 {
 }
 
-pplx::task<std::shared_ptr<Object>> DefaultApi::spawnPost(std::shared_ptr<Spawn_request> spawnRequest)
+pplx::task<std::shared_ptr<Object>> DefaultApi::spawnPost(std::shared_ptr<SpawnRequest> spawnRequest)
 {
 
     // verify the required parameter 'spawnRequest' is set
@@ -171,7 +171,7 @@ pplx::task<std::shared_ptr<Object>> DefaultApi::spawnPost(std::shared_ptr<Spawn_
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> DefaultApi::startPost(boost::optional<std::shared_ptr<Start_simulation_request>> startSimulationRequest)
+pplx::task<std::shared_ptr<Object>> DefaultApi::startPost(boost::optional<std::shared_ptr<StartSimulationRequest>> startSimulationRequest)
 {
 
 

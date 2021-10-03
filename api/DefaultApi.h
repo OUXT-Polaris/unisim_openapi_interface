@@ -23,8 +23,8 @@
 #include "../ApiClient.h"
 
 #include "Object.h"
-#include "Spawn_request.h"
-#include "Start_simulation_request.h"
+#include "SpawnRequest.h"
+#include "StartSimulationRequest.h"
 
 #include <boost/optional.hpp>
 
@@ -48,7 +48,7 @@ public:
     /// </remarks>
     /// <param name="spawnRequest"></param>
     pplx::task<std::shared_ptr<Object>> spawnPost(
-        std::shared_ptr<Spawn_request> spawnRequest
+        std::shared_ptr<SpawnRequest> spawnRequest
     );
     /// <summary>
     /// start simulation
@@ -58,7 +58,7 @@ public:
     /// </remarks>
     /// <param name="startSimulationRequest"> (optional)</param>
     pplx::task<std::shared_ptr<Object>> startPost(
-        boost::optional<std::shared_ptr<Start_simulation_request>> startSimulationRequest
+        boost::optional<std::shared_ptr<StartSimulationRequest>> startSimulationRequest
     );
     /// <summary>
     /// stop simulation
