@@ -4,6 +4,51 @@ info:
   version: "0.0.1"
   title: unisim_ros2_control_api
 
+definitions:
+  Point:
+    type: "object"
+    properties:
+      x:
+        type: number
+        format: double
+        example: 0.0
+      y:
+        type: number
+        format: double
+        example: 0.0
+      z:
+        type: number
+        format: double
+        example: 0.0
+  Quaternion:
+    type: "object"
+    properties:
+      x:
+        type: number
+        format: double
+        example: 0.0
+      y:
+        type: number
+        format: double
+        example: 0.0
+      z:
+        type: number
+        format: double
+        example: 0.0
+      w:
+        type: number
+        format: double
+        example: 1.0
+  Pose:
+    type: "object"
+    properties:
+      position:
+        type: object
+        $ref: "#/definitions/Point"
+      orientation:
+        type: object
+        $ref: "#/definitions/Quaternion"
+
 paths:
   /spawn:
     post:
@@ -27,17 +72,7 @@ paths:
         200:
           description: Successful responses
           schema:
-            title: ArrayOfPosts
-            type: array
-            items:
-              title: Posts
-              type: object
-              properties:
-                name:
-                  type: string
-                title:
-                  type: string
-                published:
-                  type: boolean
-                content:
-                  type: string
+            title: result
+            properties:
+              success:
+                type: boolean
