@@ -171,8 +171,14 @@ pplx::task<std::shared_ptr<Object>> DefaultApi::spawnPost(std::shared_ptr<SpawnR
         return result;
     });
 }
-pplx::task<std::shared_ptr<Object>> DefaultApi::startPost(boost::optional<std::shared_ptr<StartSimulationRequest>> startSimulationRequest)
+pplx::task<std::shared_ptr<Object>> DefaultApi::startPost(std::shared_ptr<StartSimulationRequest> startSimulationRequest)
 {
+
+    // verify the required parameter 'startSimulationRequest' is set
+    if (startSimulationRequest == nullptr)
+    {
+        throw ApiException(400, utility::conversions::to_string_t("Missing required parameter 'startSimulationRequest' when calling DefaultApi->startPost"));
+    }
 
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
@@ -223,8 +229,8 @@ pplx::task<std::shared_ptr<Object>> DefaultApi::startPost(boost::optional<std::s
         requestHttpContentType = utility::conversions::to_string_t("application/json");
         web::json::value json;
 
-        if (startSimulationRequest)
-            json = ModelBase::toJson(*startSimulationRequest);
+        json = ModelBase::toJson(startSimulationRequest);
+        
 
         httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
     }
@@ -234,9 +240,9 @@ pplx::task<std::shared_ptr<Object>> DefaultApi::startPost(boost::optional<std::s
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
         std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
 
-        if(startSimulationRequest && (*startSimulationRequest).get())
+        if(startSimulationRequest.get())
         {
-            (*startSimulationRequest)->toMultipart(multipart, utility::conversions::to_string_t("startSimulationRequest"));
+            startSimulationRequest->toMultipart(multipart, utility::conversions::to_string_t("startSimulationRequest"));
         }
 
         httpBody = multipart;

@@ -56,9 +56,9 @@ public:
     /// <remarks>
     /// 
     /// </remarks>
-    /// <param name="startSimulationRequest"> (optional)</param>
+    /// <param name="startSimulationRequest"></param>
     pplx::task<std::shared_ptr<Object>> startPost(
-        boost::optional<std::shared_ptr<StartSimulationRequest>> startSimulationRequest
+        std::shared_ptr<StartSimulationRequest> startSimulationRequest
     );
     /// <summary>
     /// stop simulation
