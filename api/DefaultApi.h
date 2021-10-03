@@ -22,8 +22,8 @@
 
 #include "../ApiClient.h"
 
+#include "Body.h"
 #include "Posts.h"
-#include <cpprest/details/basic_types.h>
 
 #include <boost/optional.hpp>
 
@@ -45,9 +45,9 @@ public:
     /// <remarks>
     /// 
     /// </remarks>
-    /// <param name="urdfPath">URDF file of the robot (optional)</param>
+    /// <param name="body"></param>
     pplx::task<std::vector<std::shared_ptr<Posts>>> spawnPost(
-        boost::optional<utility::string_t> urdfPath
+        std::shared_ptr<Body> body
     );
 
 protected:

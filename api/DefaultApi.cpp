@@ -36,8 +36,14 @@ DefaultApi::~DefaultApi()
 {
 }
 
-pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(boost::optional<utility::string_t> urdfPath)
+pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(std::shared_ptr<Body> body)
 {
+
+    // verify the required parameter 'body' is set
+    if (body == nullptr)
+    {
+        throw ApiException(400, utility::conversions::to_string_t("Missing required parameter 'body' when calling DefaultApi->spawnPost"));
+    }
 
 
     std::shared_ptr<ApiConfiguration> apiConfiguration( m_ApiClient->getConfiguration() );
@@ -49,6 +55,7 @@ pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(boost::opt
     std::map<utility::string_t, std::shared_ptr<HttpContent>> fileParams;
 
     std::unordered_set<utility::string_t> responseHttpContentTypes;
+    responseHttpContentTypes.insert( utility::conversions::to_string_t("application/json") );
 
     utility::string_t responseHttpContentType;
 
@@ -77,10 +84,6 @@ pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(boost::opt
     std::unordered_set<utility::string_t> consumeHttpContentTypes;
     consumeHttpContentTypes.insert( utility::conversions::to_string_t("multipart/form-data") );
 
-    if (urdfPath)
-    {
-        formParams[ utility::conversions::to_string_t("urdf_path") ] = ApiClient::parameterToString(*urdfPath);
-    }
 
     std::shared_ptr<IHttpBody> httpBody;
     utility::string_t requestHttpContentType;
@@ -89,11 +92,26 @@ pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(boost::opt
     if ( consumeHttpContentTypes.size() == 0 || consumeHttpContentTypes.find(utility::conversions::to_string_t("application/json")) != consumeHttpContentTypes.end() )
     {
         requestHttpContentType = utility::conversions::to_string_t("application/json");
+        web::json::value json;
+
+        json = ModelBase::toJson(body);
+        
+
+        httpBody = std::shared_ptr<IHttpBody>( new JsonBody( json ) );
     }
     // multipart formdata
     else if( consumeHttpContentTypes.find(utility::conversions::to_string_t("multipart/form-data")) != consumeHttpContentTypes.end() )
     {
         requestHttpContentType = utility::conversions::to_string_t("multipart/form-data");
+        std::shared_ptr<MultipartFormData> multipart(new MultipartFormData);
+
+        if(body.get())
+        {
+            body->toMultipart(multipart, utility::conversions::to_string_t("body"));
+        }
+
+        httpBody = multipart;
+        requestHttpContentType += utility::conversions::to_string_t("; boundary=") + multipart->getBoundary();
     }
     else
     {
