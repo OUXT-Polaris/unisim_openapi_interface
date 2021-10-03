@@ -103,3 +103,18 @@ paths:
             properties:
               success:
                 type: boolean
+  /stop:
+    post:
+      summary: stop simulation
+      consumes:
+       - multipart/form-data
+      produces: 
+      - "application/json"
+      responses:
+        200:
+          description: responses from UniSim
+          schema:
+            title: result
+            properties:
+              success:
+                type: boolean
