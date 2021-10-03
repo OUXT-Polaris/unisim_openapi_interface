@@ -10,11 +10,18 @@ paths:
       summary: spawn robot from URDF
       consumes:
        - multipart/form-data
+      produces: 
+      - "application/json"
       parameters:
-       - in: formData
-         name: urdf_path
-         type: string
-         description: URDF file of the robot
+      - name: "body"
+        in: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            urdf_path:
+              type: "string"
+              example: "/tmp/robot.urdf"
          
       responses:
         200:
