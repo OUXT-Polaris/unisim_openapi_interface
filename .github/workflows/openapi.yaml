@@ -41,6 +41,7 @@ jobs:
         name: cpp_client
         path: cpp_client
   commit_changes:
+    if: ${{ github.event_name != 'pull_request'}
     runs-on: ubuntu-latest
     needs: build
     steps:
