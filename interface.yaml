@@ -58,8 +58,8 @@ paths:
       produces: 
       - "application/json"
       parameters:
-      - name: "body"
-        in: "body"
+      - name: spawn_request
+        in: body
         required: true
         schema:
           type: object
@@ -86,8 +86,8 @@ paths:
       produces: 
       - "application/json"
       parameters:
-      - name: "body"
-        in: "body"
+      - name: start_simulation_request
+        in: body
         schema:
           type: object
           properties:
