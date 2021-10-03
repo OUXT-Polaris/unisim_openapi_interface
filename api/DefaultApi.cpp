@@ -36,7 +36,7 @@ DefaultApi::~DefaultApi()
 {
 }
 
-pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(std::shared_ptr<Body> body)
+pplx::task<std::shared_ptr<Object>> DefaultApi::spawnPost(std::shared_ptr<Body> body)
 {
 
     // verify the required parameter 'body' is set
@@ -150,20 +150,13 @@ pplx::task<std::vector<std::shared_ptr<Posts>>> DefaultApi::spawnPost(std::share
     })
     .then([=](utility::string_t response)
     {
-        std::vector<std::shared_ptr<Posts>> result;
+        std::shared_ptr<Object> result(nullptr);
 
         if(responseHttpContentType == utility::conversions::to_string_t("application/json"))
         {
             web::json::value json = web::json::value::parse(response);
 
-            for( auto& item : json.as_array() )
-            {
-                std::shared_ptr<Posts> itemObj(new Posts());
-                itemObj->fromJson(item);
-                result.push_back(itemObj);
-                
-            }
-            
+            result->fromJson(json);
         }
         // else if(responseHttpContentType == utility::conversions::to_string_t("multipart/form-data"))
         // {

@@ -23,7 +23,7 @@
 #include "../ApiClient.h"
 
 #include "Body.h"
-#include "Posts.h"
+#include "Object.h"
 
 #include <boost/optional.hpp>
 
@@ -46,7 +46,7 @@ public:
     /// 
     /// </remarks>
     /// <param name="body"></param>
-    pplx::task<std::vector<std::shared_ptr<Posts>>> spawnPost(
+    pplx::task<std::shared_ptr<Object>> spawnPost(
         std::shared_ptr<Body> body
     );
 
